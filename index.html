@@ -1,0 +1,716 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Compiler und Interpreter</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, Helvetica, sans-serif;
+            background: #f3f5f7;
+            color: #222;
+            line-height: 1.6;
+        }
+
+        header {
+            background: #1f3a5f;
+            color: white;
+            padding: 35px 20px;
+            text-align: center;
+        }
+
+        header h1 {
+            margin: 0 0 8px;
+            font-size: 2.2rem;
+        }
+
+        header p {
+            margin: 0;
+            font-size: 1.1rem;
+        }
+
+        main {
+            max-width: 950px;
+            margin: 30px auto;
+            padding: 0 20px;
+        }
+
+        section {
+            background: white;
+            margin-bottom: 25px;
+            padding: 28px;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+
+        h2 {
+            color: #1f3a5f;
+            margin-top: 0;
+        }
+
+        h3 {
+            margin-top: 25px;
+            color: #333;
+        }
+
+        .hinweis {
+            background: #eaf2f8;
+            border-left: 5px solid #1f3a5f;
+            padding: 15px 18px;
+            margin: 20px 0;
+        }
+
+        .merksatz {
+            background: #f8f9fa;
+            border-left: 5px solid #555;
+            padding: 15px 18px;
+            margin: 20px 0;
+        }
+
+        .schema {
+            background: #f1f3f5;
+            padding: 18px;
+            text-align: center;
+            font-size: 1.1rem;
+            font-weight: bold;
+            border-radius: 8px;
+            margin: 18px 0;
+        }
+
+        .pruefung {
+            border-left: 5px solid #e0a800;
+            background: #fff8e1;
+            padding: 18px;
+            margin-top: 20px;
+        }
+
+        .antwort {
+            display: none;
+            background: #eef6ee;
+            border-left: 5px solid #4d8b4d;
+            padding: 15px;
+            margin-top: 12px;
+        }
+
+        button {
+            background: #1f3a5f;
+            color: white;
+            border: none;
+            padding: 11px 18px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 1rem;
+            margin-top: 10px;
+        }
+
+        button:hover {
+            background: #162b46;
+        }
+
+        .freischalten {
+            text-align: center;
+            background: #f8f9fa;
+            border: 2px solid #1f3a5f;
+            margin-top: 35px;
+        }
+
+        .freischalten button {
+            background: #287a45;
+        }
+
+        .freischalten button:hover {
+            background: #205f36;
+        }
+
+        #phase2 {
+            display: none;
+        }
+
+        .abschluss {
+            background: #eaf2f8;
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 25px;
+        }
+
+        footer {
+            text-align: center;
+            color: #666;
+            padding: 25px;
+            font-size: 0.9rem;
+        }
+
+        @media (max-width: 650px) {
+            header h1 {
+                font-size: 1.7rem;
+            }
+
+            section {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+    <h1>Compiler und Interpreter</h1>
+    <p>Quellcode übersetzen und ausführen</p>
+</header>
+
+
+<main>
+
+    <!-- ===================================================== -->
+    <!-- PHASE 1: INFORMATIONSTEIL                            -->
+    <!-- ===================================================== -->
+
+    <section id="phase1">
+
+        <h2>Teil 1 – Informationsquelle</h2>
+
+        <div class="hinweis">
+            <strong>Arbeitsauftrag:</strong><br>
+            Lesen Sie die folgenden Informationen aufmerksam durch.
+            Bearbeiten Sie anschließend mithilfe der Informationen
+            die Tabelle auf Ihrem Arbeitsblatt.
+        </div>
+
+
+        <!-- GRUNDIDEE -->
+
+        <h2>1. Grundidee</h2>
+
+        <p>
+            Programme werden von Menschen in einer Programmiersprache geschrieben.
+            Der dabei entstehende Programmtext wird als
+            <strong>Quellcode</strong> bezeichnet.
+        </p>
+
+        <p>
+            Ein Prozessor kann den Quellcode nicht unmittelbar als
+            Maschinenbefehle ausführen. Der Quellcode muss deshalb in
+            eine für die Ausführung geeignete Form
+            <strong>übersetzt bzw. verarbeitet</strong> werden.
+        </p>
+
+        <p>
+            Dafür können unter anderem
+            <strong>Compiler</strong> und
+            <strong>Interpreter</strong> eingesetzt werden.
+        </p>
+
+
+        <!-- COMPILER -->
+
+        <h2>2. Compiler</h2>
+
+        <p>
+            Ein <strong>Compiler</strong> übersetzt den Quellcode eines
+            Programms <strong>vor dessen Ausführung</strong>.
+        </p>
+
+        <div class="schema">
+            Quellcode → Compiler → ausführbarer Code → Ausführung
+        </div>
+
+        <p>
+            Der Compiler führt die Übersetzung durch, bevor das Programm
+            ausgeführt wird. Das Ergebnis kann anschließend ausgeführt
+            werden.
+        </p>
+
+        <p>
+            Wird der Quellcode verändert, muss die geänderte Version
+            in der Regel <strong>erneut kompiliert</strong> werden.
+        </p>
+
+        <div class="merksatz">
+            <strong>Merksatz:</strong><br>
+            Der Compiler übersetzt den Quellcode
+            <strong>vor der Ausführung</strong>.
+        </div>
+
+
+        <!-- INTERPRETER -->
+
+        <h2>3. Interpreter</h2>
+
+        <p>
+            Ein <strong>Interpreter</strong> verarbeitet Programmanweisungen
+            <strong>während der Programmausführung</strong>.
+        </p>
+
+        <div class="schema">
+            Quellcode → Interpreter → Ausführung
+        </div>
+
+        <p>
+            Beim Interpreter sind die Verarbeitung des Programmcodes und
+            dessen Ausführung eng miteinander verbunden.
+        </p>
+
+        <p>
+            Ein zuvor erzeugtes eigenständiges ausführbares Programm ist
+            dabei <strong>nicht zwingend erforderlich</strong>.
+        </p>
+
+        <div class="merksatz">
+            <strong>Merksatz:</strong><br>
+            Der Interpreter verarbeitet den Programmcode
+            <strong>während der Ausführung</strong>.
+        </div>
+
+
+        <!-- ENTSCHEIDENDER UNTERSCHIED -->
+
+        <h2>4. Der entscheidende Unterschied</h2>
+
+        <p>
+            Der wesentliche Unterschied zwischen Compiler und Interpreter
+            liegt im <strong>Zeitpunkt der Verarbeitung des Programmcodes</strong>.
+        </p>
+
+        <div class="schema">
+            Compiler → Übersetzung <strong>vor</strong> der Ausführung
+            <br><br>
+            Interpreter → Verarbeitung <strong>während</strong> der Ausführung
+        </div>
+
+        <div class="merksatz">
+            <strong>Prüfungswissen:</strong><br>
+            Der Compiler übersetzt den Quellcode vor der Ausführung.
+            Der Interpreter verarbeitet den Programmcode während der Ausführung.
+        </div>
+
+
+        <!-- FREISCHALTUNG -->
+
+        <div class="freischalten">
+
+            <h2>Bereit für den Prüfungswissen-Check?</h2>
+
+            <p>
+                Haben Sie den Informationstext gelesen und die Tabelle
+                auf Ihrem Arbeitsblatt bearbeitet?
+            </p>
+
+            <p>
+                Wenn Sie bereit sind, klicken Sie auf den folgenden Button.
+            </p>
+
+            <button onclick="showPhase2()">
+                ✓ Information gelesen und Tabelle bearbeitet
+            </button>
+
+        </div>
+
+    </section>
+
+
+    <!-- ===================================================== -->
+    <!-- PHASE 2: PRÜFUNGSWISSEN-CHECK                         -->
+    <!-- ===================================================== -->
+
+    <section id="phase2">
+
+        <h2>Teil 2 – Prüfungswissen-Check</h2>
+
+        <div class="hinweis">
+            <strong>Arbeitsauftrag:</strong><br>
+            Bearbeiten Sie die folgenden möglichen Prüfungsfragen
+            zunächst selbstständig.
+            Überprüfen Sie Ihre Antworten anschließend mit der
+            jeweiligen Musterlösung.
+        </div>
+
+
+        <!-- FRAGE 1 -->
+
+        <div class="pruefung">
+
+            <h3>1. Begriffe zuordnen</h3>
+
+            <p>
+                Ergänzen Sie die Lücken:
+            </p>
+
+            <p>
+                Der __________________ übersetzt ein Programm vor seiner Ausführung.
+            </p>
+
+            <p>
+                Der __________________ verarbeitet den Programmcode während der Ausführung.
+            </p>
+
+            <button onclick="toggleAnswer('a1')">
+                Antwort anzeigen
+            </button>
+
+            <div class="antwort" id="a1">
+
+                <strong>Musterlösung:</strong><br><br>
+
+                Der <strong>Compiler</strong> übersetzt ein Programm
+                vor seiner Ausführung.
+
+                Der <strong>Interpreter</strong> verarbeitet den
+                Programmcode während der Ausführung.
+
+            </div>
+
+        </div>
+
+
+        <!-- FRAGE 2 -->
+
+        <div class="pruefung">
+
+            <h3>2. Richtig oder falsch?</h3>
+
+            <p>
+                Beurteilen Sie die Aussagen:
+            </p>
+
+            <ul>
+                <li>
+                    Ein Compiler übersetzt den Quellcode vor der Ausführung.
+                </li>
+
+                <li>
+                    Ein Interpreter erzeugt grundsätzlich eine EXE-Datei.
+                </li>
+
+                <li>
+                    Ein Interpreter benötigt den Quellcode zur Ausführung.
+                </li>
+
+                <li>
+                    Nach einer Änderung am Quellcode muss ein kompiliertes
+                    Programm erneut übersetzt werden.
+                </li>
+            </ul>
+
+            <button onclick="toggleAnswer('a2')">
+                Antwort anzeigen
+            </button>
+
+            <div class="antwort" id="a2">
+
+                <strong>Musterlösung:</strong><br><br>
+
+                ✓ Ein Compiler übersetzt den Quellcode vor der Ausführung.
+
+                <br><br>
+
+                ✗ Ein Interpreter erzeugt grundsätzlich keine EXE-Datei.
+                Ein Interpreter arbeitet nach dem hier verwendeten
+                Grundmodell während der Programmausführung.
+
+                <br><br>
+
+                ✓ Ein Interpreter benötigt den Programmcode bzw. die
+                zu verarbeitenden Programminformationen zur Ausführung.
+
+                <br><br>
+
+                ✓ Nach einer Änderung am Quellcode muss ein kompiliertes
+                Programm in der Regel erneut übersetzt werden.
+
+            </div>
+
+        </div>
+
+
+        <!-- FRAGE 3 -->
+
+        <div class="pruefung">
+
+            <h3>3. Ablauf beschreiben</h3>
+
+            <p>
+                Bringen Sie die Begriffe für ein kompiliertes Programm
+                in die richtige Reihenfolge:
+            </p>
+
+            <p>
+                <strong>
+                    Quellcode – Compiler – ausführbarer Code – Ausführung
+                </strong>
+            </p>
+
+            <button onclick="toggleAnswer('a3')">
+                Antwort anzeigen
+            </button>
+
+            <div class="antwort" id="a3">
+
+                <strong>Musterlösung:</strong><br><br>
+
+                Quellcode → Compiler → ausführbarer Code → Ausführung
+
+            </div>
+
+        </div>
+
+
+        <!-- FRAGE 4 -->
+
+        <div class="pruefung">
+
+            <h3>4. Compiler und Interpreter beschreiben</h3>
+
+            <p>
+                <strong>a)</strong>
+                Beschreiben Sie die Aufgabe eines Compilers.
+            </p>
+
+            <p>
+                <strong>b)</strong>
+                Beschreiben Sie die Aufgabe eines Interpreters.
+            </p>
+
+            <button onclick="toggleAnswer('a4')">
+                Musterlösung anzeigen
+            </button>
+
+            <div class="antwort" id="a4">
+
+                <strong>a) Compiler:</strong><br>
+                Ein Compiler übersetzt den Quellcode vor der Ausführung
+                in ausführbaren Code.
+
+                <br><br>
+
+                <strong>b) Interpreter:</strong><br>
+                Ein Interpreter verarbeitet den Programmcode während
+                der Ausführung.
+
+            </div>
+
+        </div>
+
+
+        <!-- FRAGE 5 -->
+
+        <div class="pruefung">
+
+            <h3>5. Unterschied erklären</h3>
+
+            <p>
+                <strong>
+                    Nennen Sie den grundlegenden Unterschied zwischen
+                    Compiler und Interpreter.
+                </strong>
+            </p>
+
+            <button onclick="toggleAnswer('a5')">
+                Musterlösung anzeigen
+            </button>
+
+            <div class="antwort" id="a5">
+
+                <strong>Musterlösung:</strong><br><br>
+
+                Der wesentliche Unterschied liegt im Zeitpunkt der
+                Verarbeitung des Programmcodes:
+
+                Der Compiler übersetzt den Quellcode
+                <strong>vor der Ausführung</strong>.
+
+                Der Interpreter verarbeitet den Programmcode
+                <strong>während der Ausführung</strong>.
+
+            </div>
+
+        </div>
+
+
+        <!-- FRAGE 6 -->
+
+        <div class="pruefung">
+
+            <h3>6. Verständnis- und Anwendungsfragen</h3>
+
+
+            <h3>a) Ausführungsgeschwindigkeit</h3>
+
+            <p>
+                Warum kann ein kompiliertes Programm in der Regel schneller
+                ausgeführt werden als ein Programm, bei dem der Quellcode
+                während der Ausführung interpretiert wird?
+            </p>
+
+            <button onclick="toggleAnswer('a6a')">
+                Musterlösung anzeigen
+            </button>
+
+            <div class="antwort" id="a6a">
+
+                <strong>Musterlösung:</strong><br>
+
+                Beim kompilierten Programm wurde der Quellcode bereits
+                vor der Ausführung übersetzt. Während der Ausführung muss
+                diese Übersetzung nicht erneut durchgeführt werden.
+
+            </div>
+
+
+            <h3>b) Python</h3>
+
+            <p>
+                Woran erkennt man, dass Python häufig als interpretierte
+                Programmiersprache bezeichnet wird?
+            </p>
+
+            <button onclick="toggleAnswer('a6b')">
+                Musterlösung anzeigen
+            </button>
+
+            <div class="antwort" id="a6b">
+
+                <strong>Musterlösung:</strong><br>
+
+                Python wird häufig als interpretierte Sprache bezeichnet,
+                weil Python-Programme typischerweise über eine
+                Laufzeitumgebung ausgeführt werden, die den Programmcode
+                zur Laufzeit verarbeitet.
+
+                <br><br>
+
+                <em>
+                    Hinweis: Die tatsächliche Verarbeitung von Python ist
+                    technisch komplexer als das vereinfachte Modell
+                    „Quellcode → Interpreter → Ausführung“.
+                </em>
+
+            </div>
+
+
+            <h3>c) Vorteil eines Interpreters</h3>
+
+            <p>
+                Welchen Vorteil kann ein Interpreter gegenüber einem
+                Compiler haben?
+            </p>
+
+            <button onclick="toggleAnswer('a6c')">
+                Musterlösung anzeigen
+            </button>
+
+            <div class="antwort" id="a6c">
+
+                <strong>Musterlösung:</strong><br>
+
+                Änderungen am Quellcode können ohne einen vorherigen
+                separaten Übersetzungsschritt ausgeführt bzw. getestet
+                werden.
+
+            </div>
+
+
+            <h3>d) Plattformabhängigkeit</h3>
+
+            <p>
+                Was bedeutet es, dass ein Programm plattformabhängig
+                bzw. plattformunabhängig ist?
+            </p>
+
+            <button onclick="toggleAnswer('a6d')">
+                Musterlösung anzeigen
+            </button>
+
+            <div class="antwort" id="a6d">
+
+                <strong>Musterlösung:</strong><br>
+
+                Ein plattformabhängiges Programm benötigt eine bestimmte
+                Betriebssystem- oder Hardwareumgebung.
+
+                Ein plattformunabhängiges Programm kann dagegen auf
+                verschiedenen Systemen ausgeführt werden, sofern die
+                erforderliche Laufzeitumgebung vorhanden ist.
+
+            </div>
+
+        </div>
+
+
+        <!-- ABSCHLUSS -->
+
+        <div class="abschluss">
+
+            <h2>Zum Schluss</h2>
+
+            <p>
+                Formulieren Sie den Unterschied zwischen Compiler und
+                Interpreter jetzt noch einmal in <strong>2–3 Sätzen</strong>,
+                so wie Sie ihn in einer Prüfung beantworten würden.
+            </p>
+
+            <p>
+                <strong>
+                    Denken Sie dabei an die Begriffe:
+                    Quellcode – übersetzen – ausführen
+                </strong>
+            </p>
+
+            <p>
+                Die endgültige Antwort wird anschließend gemeinsam
+                im Unterricht besprochen und auf dem Arbeitsblatt
+                gesichert.
+            </p>
+
+        </div>
+
+    </section>
+
+</main>
+
+
+<footer>
+    Unterrichtsmaterial – Compiler und Interpreter
+</footer>
+
+
+<script>
+
+    function showPhase2() {
+
+        document.getElementById("phase2").style.display = "block";
+
+        document.getElementById("phase2").scrollIntoView({
+            behavior: "smooth"
+        });
+
+    }
+
+
+    function toggleAnswer(id) {
+
+        const answer = document.getElementById(id);
+
+        if (answer.style.display === "block") {
+
+            answer.style.display = "none";
+
+        } else {
+
+            answer.style.display = "block";
+
+        }
+
+    }
+
+</script>
+
+</body>
+</html>
